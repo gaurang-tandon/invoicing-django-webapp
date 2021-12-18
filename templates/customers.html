@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block heading %}My Customers Tables :{% endblock heading %}
+
+
+{% block body %}
+
+<table class="border_table border-light"> <h2>Customers Table</h2>
+    <tr>
+        {% for item in cust_col_names%}
+        <th>{{item}}</th>
+        {% endfor%}
+        </tr>
+        {% for item in customer_table %}
+            <tr><form action="customers" method="post"> 
+            {% csrf_token %}
+            <td style="width:50px;"><input type="hidden" name='c_id' value={{ item.customer_id }}>{{ item.customer_id }}</td> 
+            <td style="width:150px;"><input type="hidden">{{ item.customer_name }}</td>
+            <td style="width:400px;"><input type="hidden">{{ item.address }}</td>
+            <td style="width:100px;"><input type="hidden">{{ item.zip_code }}</td>
+            <td style="width:100px;"><input type="hidden">{{ item.phone_number }}</td>
+            <td><input style="width:100px;" type="submit" name="my_button" value="Edit"></td>
+            <td><input style="width:100px" type="submit" name="my_button" value="Delete"></td>
+            </form>
+        </tr>
+        {% endfor %}
+</table>
+
+<h2><a href="/add_customer" class="text-decoration-none float-end">New Customer</a></h2>
+
+
+{% endblock body %}

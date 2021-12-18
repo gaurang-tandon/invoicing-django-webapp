@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block heading %}My Tables{% endblock heading %}
+
+
+{% block body %}
+
+<h2><a href="/new_bill" class="text-decoration-none float-end">New Bill</a></h2><br>
+<ul>
+    <li>
+        <table><h2><a href="/customers" class="text-decoration-none">Customer Tables</a></h2></table>
+    </li>
+    <li>
+        <table><h2><a href="/my_bills" class="text-decoration-none">Bill Tables</a></h2></table>
+    </li>
+
+    <li>
+<table class="border_table"><h2>Items Table</h2>
+    <tr>
+        {% for item in items_col_names%}
+        <th>{{item}}</th>
+        {% endfor%}
+        <th>Delete</th>
+        </tr>
+        {% for item in items_table %}
+        <tr>
+            <td>{{ item.item_id }}</td> 
+            <td>{{ item.item_name }}</td>
+            <td>{{ item.item_rate }}</td>
+            <td><form action="my_table" method="post">
+            {% csrf_token %}
+                <input type="submit">
+            </form></td>
+        </tr>
+        {% endfor %}
+</table>
+</li>
+
+</ul>
+
+{% endblock body %}

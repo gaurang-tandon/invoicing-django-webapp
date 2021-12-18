@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block heading %}Choose 1{% endblock heading %}
+
+
+{% block body %}
+<ul class="text-light text-center my-5 h5 p-0">
+    <div class="row justify-content-around p-0 m-0">
+        <div class="col-4">
+            <li class="m-5"><a href="/new_bill" class="text-decoration-none text-light">New Bill</a></li>
+            <li class="m-5"><a href="/add_customer" class="text-decoration-none text-light">New Customer</a></li>
+            <li class="m-5"><a href="/add_item" class="text-decoration-none text-light">New Item</a></li>
+        </div>
+        <div class="col-4">
+            <li class="m-5"><a href="/my_bills" class="text-decoration-none text-light">View/Edit Bills</a></li>
+            <li class="m-5"><a href="/customers" class="text-decoration-none text-light">View/Edit Customers</a></li>
+            <li class="m-5"><a href="/items" class="text-decoration-none text-light">View/Edit Items</a></li>
+        </div>
+    </div>
+</ul>
+
+{% for message in messages %}
+    <div{% if message.tags %} class="{{ message.tags }} text-warning text-center"{% endif %}>{{ message }}</div>
+    {% endfor %}
+
+{% endblock body %}

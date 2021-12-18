@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% load static %}
+<link href="{% static 'bill_view.css' %}" rel="stylesheet">
+
+
+{% block heading %}My Bill ID:{{bill_id}}{% endblock heading %}
+
+
+{% block body %}
+
+
+<div id="bill_view">
+    <table class="w-100 mx-0">
+        <div id="bill_header">
+            <tr>
+                <td class="text-start" colspan="2">
+                    <label class="text-end border-0" style="width:150px;" for="bill_id">Bill ID:</label>
+                    <input class="text-start" disabled="true" type="text" name="bill_id" id="bill_id" value='{{bill_id}}'}>
+                </td>
+                <td class="text-end" colspan="3">
+                    <label style="width:150px;" class="text-end border-0" for="bill_date">Bill Date:</label>
+                    <input class="text-start" type="text" name="bill_date" id="bill_date" value='{{bill_date}}'>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-start" colspan="3">
+                    <label class="text-end border-0" style="width:150px;" for="customer_name">Customer Name:</label>
+                    <select style="width:200px;" id="customer_name" name="customer_id">
+                        <option value="{{bill_customer_name}}">{{bill_customer_name}}</option>
+                          {% for customer in customer_table %}
+                          {% if customer == bill_customer_name%}
+                          <option disabled="true" value="{{customer.customer_id}}">{{ customer.customer_name }}</option>
+                          {% else %}
+                          <option value="{{customer.customer_id}}">{{ customer.customer_name }}</option>
+                          {% endif %}
+                          {% endfor %}
+                      </select>
+                </td>
+            </tr>
+        </div>
+        <tr class="border_table bill_body">
+            <th style="width: 5%;">Item Id</th>
+            <th style="width: 50%;">Item Name</th>
+            <th style="width: 5%;">Quantity</th>
+            <th style="width: 15%;">Rate</th>
+            <th style="width: 20%;">Amount</th>
+        </tr>
+        <tr class="border_table bill_body" id="row">
+            <td>{{item_id}}</td>
+            <td>
+                <select class='border-0 bg-light w-100 mx-0 my-0' id="item_id" name="item_id">
+                    <option class="text-start" value="{{bill_item_name}}">{{bill_item_name}}</option>
+                      {% for items in items_table %}
+                        {% if items.item_name == bill_item_name %}
+                            <option disabled="true" class="text-start" value="{{items.item_id}}">{{ items.item_name }}</option>
+                            {% else %}
+                            <option class="text-start" value="{{items.item_id}}">{{ items.item_name }}</option>
+                            {% endif %}
+                      {% endfor %}
+                  </select>
+            </td>
+            <td><input class="w-100 border-0" type="number" min="0" id="item_quantity" onchange="change()" name="item_quantity" value="{{item_quantity}}"></td>
+            <td><input id="item_rate" class="w-100 border-0 text-end" onchange="change()" value='{{item_rate}}'></td>
+            <td id="amount" class="text-end"></td>
+        </tr>
+        <div id="bill_footer">
+            <tr>
+                <td class="text-end" colspan="5">
+                <label class="h1 text-end border-0" for="bill_amt">Total Amount:</label>
+                <input class="h1 w-25 text-end" disabled="true" id="bill_amt" name="bill_amt">
+                </td>
+            </tr>
+            </div>
+    </table>
+</div>
+
+<h4><a href="/my_bills" class="text-decoration-none float-start">Back</a></h4>
+<h2><a href="/new_bill" class="text-decoration-none float-end">New Bill</a></h2>
+
+
+<script>
+    var quantity = Number(document.getElementById("item_quantity").value);
+    var rate = Number(document.getElementById("item_rate").value);
+    document.getElementById("amount").innerHTML = quantity*rate;
+    document.getElementById("bill_amt").value = quantity*rate;
+    function change(){
+        quantity = Number(document.getElementById("item_quantity").value);
+        console.log(quantity);
+        rate = Number(document.getElementById("item_rate").value);
+        console.log(rate);
+        document.getElementById("amount").innerHTML = quantity*rate;
+        document.getElementById("bill_amt").value = quantity*rate;
+    }
+</script>
+
+
+{% endblock body %}

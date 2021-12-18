@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+
+{% block heading %}Bills :{% endblock heading %}
+
+
+{% block body %}
+<!--  -->
+
+<table class="border_table mx-auto text-light">
+  <tr class="text-center">
+      <th>Bill Id</th>
+      <th>Date</th>
+      <th>Customer Name</th>
+      <th>Amount</th>
+      <th>View</th>
+      <th>Edit</th>
+      <th>Delete</th>
+      </tr>
+
+
+{% for item in page_obj %}
+<tr>
+    <form action="my_bills" method="post">
+    {% csrf_token %}
+        <td style="width:100px;"><input type="hidden" name='b_id' value={{ item.bill_id }}>{{ item.bill_id }}</td> 
+        <td style="width:150px;"><input type="hidden">{{ item.bill_date }}</td>
+        <td style="width:300px;"><input type="hidden">{{ item.customer_id }}</td>
+        <td style="width:300px;"><input type="hidden">{{ item.total_amt }}</td>
+        <td><input style="width:50px;" type="submit" name="my_button" value="V"></td>
+        <td><input style="width:50px" type="submit" name="my_button" value="E"></td>
+        <td><input style="width:50px" type="submit" name="my_button" value="D"></td>
+    </form>
+</tr>
+{% endfor %}
+</table>
+
+<div class="pagination justify-content-center my-5">
+  <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+    <div class="justify-content-start">
+      {% if page_obj.has_previous %}
+          <a class="text-decoration-none text-success" href="?page=1">&laquo; first</a>
+          <a class="text-decoration-none text-success" href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+    </div>
+
+      <div class="justify-content-end">
+      {% if page_obj.has_next %}
+          <a class="text-decoration-none text-success" href="?page={{ page_obj.next_page_number }}">next</a>
+          <a class="text-decoration-none text-success" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+      </div>
+</div>
+
+
+<div class="text-center my-5">
+      <a href="/new_bill" class="text-decoration-none text-light h4">
+      <span class="fw-bold text-light material-icons">
+add
+</span></br>
+      Add New Bill
+      </a>
+  </div>
+
+
+
+<!--  -->
+{% endblock body %}

@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% load static %}
+<link href="{% static 'bill_view.css' %}" rel="stylesheet">
+
+
+{% block heading %}New Bill:{{my_bill_id}}{% endblock heading %}
+
+
+{% block body %}
+
+<!--  -->
+
+
+
+
+<div class="text-center mx-auto h5 text-light">
+  <form action="/new_bill" method="post" id="new_bill">
+    {% csrf_token %}
+      <div class="row justify-content-between w-100">
+          <div class="col-5">
+          <label class="text-start" style="width:150px; margin:10px;" for="customer_name">Customer Name</label>
+      <select name="customer_id" id="customer_name" form="new_bill" style="width: 150px;">
+      <option value="">Select One</option>
+      {% for customer in customer_table %}
+                  <option value="{{customer.customer_id}}">{{ customer.customer_name }}</option>
+                  {% endfor %}
+    </select>
+  </div>
+  <div class="col-5">
+  <label class="text-end" style="width:100px; margin:10px;" for="bill_date">Date</label>
+      <input type="date" name="bill_date" id="bill_date" style="width:175px;">
+  </div>
+</div>
+
+<div class="container">
+  <table class="border_table my-5 mx-auto" id="items_table">
+      <tr>
+          <th style="width: 200px;">Item Name</th>
+          <th style="width: 100px;">Rate</th>
+          <th style="width: 100px;">Quantity</th>
+          <th style="width: 150px;">Amount</th>
+      </tr>
+      <tr id="item_row">
+          <td>
+              <select name="item_id" id="item_id" form="new_bill" class='bg-light my-0 w-100'>
+                  <option value="">Select One</option>
+                  {% for items in items_table %}
+                      <option class="text-start" value="{{items.item_id}}">{{ items.item_name }}</option>
+                      {% endfor %}
+                </select>
+              </td>
+              <td><input onchange="q_change(this.id)" min='0' type="number" name="item_rate" id="item_rate" class='w-100'></td>
+              <td><input onchange="q_change(this.id)" min='0' type="number" name="item_quantity" id="item_quantity" class='w-100'></td>
+              <td><input type="text" name="amount" id="amount" class='w-100 bg-light text-end' Readonly></td>
+          </tr>
+      </table>
+  </div>
+
+      <button class="btn text-center btn-success fw-bold" onclick='addItemsRow()' type="button">
+          <span class="text-light material-icons">add</span><br>
+          Add Item
+      </button>
+
+      <td colspan="4" class="visually-hidden align-self-start">
+        <label for="item_count" class="visually-hidden">Number of Items: </label>
+        <input type='number' name="item_count" id="item_count" class='visually-hidden bg-light' readOnly>
+        <br>
+      </td>
+  
+  <div class="container">
+      <div class="row text-end">
+          <div class="col align-self-end my-3">
+            <label for="bill_amt">Total Amount</label>
+              <input name="bill_amt" id="bill_amt" readOnly class="text-end h2" style="height:50px; width:250px; background:white;">
+          </div>
+      </div>
+  </div>
+  <input class="mx-auto my-5 p-3 border rounded-pill" type="submit" value="Save New Bill">
+</form>
+</div>
+
+
+
+
+<!--  
+<div id="bill_view">
+  <form action="new_bill" method="post">
+    
+    <table class="w-100 mx-0">
+        <div id="bill_header">
+            <tr>
+                <td class="text-start" colspan="2">
+                    <label class="text-end border-0" style="width:150px;" for="bill_id">Bill ID:</label>
+                    <input style="width:200px;" class="text-start" disabled="true" type="text" name="bill_id" id="bill_id" value="Autofield">
+                </td>
+                
+            </tr>
+            <tr>
+                
+            </tr>
+        </div>
+      </table>
+      <div class="container">
+        <table class="border_table my-5 mx-auto" id="items_table">
+          <tr class="border_table bill_body">
+            <th style="width: 50%;">Item Name</th>
+            <th style="width: 5%;">Quantity</th>
+            <th style="width: 15%;">Rate</th>
+            <th style="width: 25%;">Amount</th>
+        </tr>
+            <tr id="">
+                <td>
+                  <select class='border-0 bg-light w-100 mx-0 all_items' name='item_id' id="item_id">
+                    <option></option>
+                      {% for items in items_table %}
+                      <option class="text-start" value="{{items.item_id}}">{{ items.item_name }}</option>
+                      {% endfor %}
+                  </select>
+                </td>
+                <td><input onchange="change()" class='border-0 w-100 mx-0' min='0' type="number" name="item_quantity" id="item_quantity"></td>
+                <td>
+
+
+                  <input onchange="change()" class="w-100 border-0 mx-0" type="number" min="0" name="item_rate" id="item_rate">
+                
+               
+                  
+                </td>
+                <td><input type="text" name="amount" id="amount" class='w-100 mx-0 border-0 text-end bg-light' readOnly></td>
+            </tr>
+        </table>
+    </div>
+      <table class="w-100 mx-0">
+        <div id="bill_footer">
+          <tr>
+            <td colspan="5" class="text-end">
+              <button class="btn text-center btn-success fw-bold" onclick='addItemsRow()' type="button">
+                Add Item
+            </button><br>
+            </td>
+          </tr>
+          <tr>
+            
+          </tr>
+            <tr>
+                <td class="text-end h1" colspan="5">
+                
+                </td>
+            </tr>
+            <tr>
+              <td colspan="5" class="text-end">
+                <input class="h2" type="submit" value="Save Bill">
+              </td>
+            </tr>
+            </div>
+    </table>
+    
+  </form>
+</div>
+-->
+<div class="container">
+<h4><a href="/my_bills" class="text-decoration-none text-white float-start">Cancel/Go Back</a></h4>
+<h2><a href="/new_bill" class="text-decoration-none text-white float-end">New Bill</a></h2>
+</div>
+{% load static %}  
+    <script src="{% static '/script.js' %}" type="text/javascript"></script> 
+
+{% endblock body %}
